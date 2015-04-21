@@ -1,6 +1,7 @@
 'use strict';
 
 var request = require('supertest');
+var assert = require('assert');
 var expect = require('expect');
 var should = require('should');
 var mongoose = require('mongoose');
@@ -19,7 +20,44 @@ describe('GET requests', function(){
         done();
       }
     });
-  }); 
+  });
+
+  it('to api/user sends you to the correct page', function() {
+    request(app)
+    .get('/api/user')
+    .expect(200)
+    .end(function(err, res) {
+      if(err) {
+        return done(err);
+      }
+      done();
+    });
+  });
+
+  it('to api/users/friends', function() {
+    request(app)
+    .get('/api/users/friends')
+    .expect(200)
+    .end(function(err, res) {
+      if(err) {
+        return done(err);
+      }
+      done();
+    });
+  });
+
+  it('to api/users/friend', function() {
+    request(app)
+    .get('/api/users/friend')
+    .expect(200)
+    .end(function(err, res) {
+      if(err) {
+        return done(err);
+      }
+      done();
+    });
+  });
+
   it('to other directories redirect you to the homepage', function(){
     request(app)
     .get('/somethingElse')
@@ -91,7 +129,7 @@ describe('User', function() {
 
     user.save(function(error) {
       if(error) {
-        // console.log('error: ' + error.message);
+        console.log('error: ' + error.message);
       } else {
         // console.log('no error');
       }
@@ -110,7 +148,7 @@ describe('User', function() {
   after(function(done) {
     mongoose.connection.db.dropCollection('users', function(err, result) {
       if(err){
-        // console.log(err);
+        console.log(err);
       }
       done();
     })
